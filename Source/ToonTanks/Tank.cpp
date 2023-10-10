@@ -8,7 +8,6 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "DrawDebugHelpers.h"
 
 ATank::ATank()
 {
@@ -53,20 +52,18 @@ void ATank::Tick(float DeltaTime)
     if (PlayerControllerRef)
     {
         FHitResult HitResult;
-        PlayerControllerRef->GetHitResultUnderCursor(
+        bool ShouldRotate = PlayerControllerRef->GetHitResultUnderCursor(
             ECollisionChannel::ECC_Visibility,
             false,
             HitResult
         );
-        DrawDebugSphere(
-            GetWorld(),
-            HitResult.ImpactPoint,
-            25,
-            12,
-            FColor::Red,
-            false,
-            -1
-        );
+
+        // Only rotate when player is mousing over visible targets to prevent a reset rotation
+        // This appears to have the same effect as adding invisible barriers to the level
+        if (ShouldRotate)
+        {
+            RotateTurret(HitResult.ImpactPoint);
+        }
     }
 }
 
