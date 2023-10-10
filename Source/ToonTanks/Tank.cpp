@@ -41,6 +41,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     {
         EnhancedInputAction->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATank::Move);
         EnhancedInputAction->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ATank::Turn);
+        EnhancedInputAction->BindAction(FireAction, ETriggerEvent::Started, this, &ATank::Fire);
     }
 }
 
@@ -57,13 +58,7 @@ void ATank::Tick(float DeltaTime)
             false,
             HitResult
         );
-
-        // Only rotate when player is mousing over visible targets to prevent a reset rotation
-        // This appears to have the same effect as adding invisible barriers to the level
-        if (ShouldRotate)
-        {
-            RotateTurret(HitResult.ImpactPoint);
-        }
+        RotateTurret(HitResult.ImpactPoint);
     }
 }
 
@@ -81,4 +76,9 @@ void ATank::Turn(const FInputActionValue& Value)
     double DeltaTime = UGameplayStatics::GetWorldDeltaSeconds(this);
     DeltaRotation.Yaw = Value.Get<float>() * DeltaTime * TurnRate;
     AddActorLocalRotation(DeltaRotation, true);
+}
+
+void ATank::Fire(const FInputActionValue& Value)
+{
+   Super::Fire();
 }

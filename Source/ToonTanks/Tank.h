@@ -30,7 +30,8 @@ private:
 	class UCameraComponent* Camera;
 
 	void Move(const FInputActionValue& Value);
-	void Turn(const FInputActionValue& Vlaue);
+	void Turn(const FInputActionValue& Value);
+	void Fire(const FInputActionValue& Value);
 
 	APlayerController* PlayerControllerRef;
 
@@ -51,6 +52,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enhanced Input");
 	class UInputAction* TurnAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enhanced Input");
+	class UInputAction* FireAction;
 
 	UPROPERTY(EditAnywhere, Category = "Movement", BlueprintReadWrite)
 	float Speed = 500;
