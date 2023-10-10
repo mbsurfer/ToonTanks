@@ -8,6 +8,7 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "DrawDebugHelpers.h"
 
 ATank::ATank()
 {
@@ -23,9 +24,11 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
-    if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+    PlayerControllerRef = Cast<APlayerController>(GetController());
+
+    if (PlayerControllerRef)
     {
-        if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+        if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerControllerRef->GetLocalPlayer()))
         {
             Subsystem->AddMappingContext(MappingContext, 0);
         }
@@ -39,6 +42,31 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     {
         EnhancedInputAction->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATank::Move);
         EnhancedInputAction->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ATank::Turn);
+    }
+}
+
+// Called every frame
+void ATank::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+    if (PlayerControllerRef)
+    {
+        FHitResult HitResult;
+        PlayerControllerRef->GetHitResultUnderCursor(
+            ECollisionChannel::ECC_Visibility,
+            false,
+            HitResult
+        );
+        DrawDebugSphere(
+            GetWorld(),
+            HitResult.ImpactPoint,
+            25,
+            12,
+            FColor::Red,
+            false,
+            -1
+        );
     }
 }
 
