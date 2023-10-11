@@ -30,4 +30,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	float FireRange = 800;
+
+	FTimerHandle FireRateTimerHandle;
+	float FireRate = 2;
+	void CheckFireCondition();
+
+	bool IsTankInRange();
 };
