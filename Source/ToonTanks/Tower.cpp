@@ -6,11 +6,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
 
-ATower::ATower()
-{
-    // constructor
-}
-
 // Called when the game starts or when spawned
 void ATower::BeginPlay()
 {
@@ -36,6 +31,12 @@ void ATower::Tick(float DeltaTime)
     {
         RotateTurret(Tank->GetActorLocation());
     }
+}
+
+void ATower::HandleDestruction()
+{
+    Super::HandleDestruction();
+    Destroy();
 }
 
 void ATower::CheckFireCondition()

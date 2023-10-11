@@ -18,16 +18,29 @@ ATank::ATank()
     Camera->SetupAttachment(SpringArm);
 }
 
+APlayerController* ATank::GetTankPlayerController() const
+{
+    return TankPlayerController;
+}
+
+void ATank::HandleDestruction()
+{
+    Super::HandleDestruction();
+
+    SetActorHiddenInGame(true);
+    SetActorTickEnabled(false);
+}
+
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
-    PlayerControllerRef = Cast<APlayerController>(GetController());
+    TankPlayerController = Cast<APlayerController>(GetController());
 
-    if (PlayerControllerRef)
+    if (TankPlayerController)
     {
-        if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerControllerRef->GetLocalPlayer()))
+        if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(TankPlayerController->GetLocalPlayer()))
         {
             Subsystem->AddMappingContext(MappingContext, 0);
         }
@@ -50,10 +63,11 @@ void ATank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    if (PlayerControllerRef)
+    // The tank turret should follow the player's mouse
+    if (TankPlayerController)
     {
         FHitResult HitResult;
-        bool ShouldRotate = PlayerControllerRef->GetHitResultUnderCursor(
+        bool ShouldRotate = TankPlayerController->GetHitResultUnderCursor(
             ECollisionChannel::ECC_Visibility,
             false,
             HitResult

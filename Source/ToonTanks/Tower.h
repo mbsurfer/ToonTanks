@@ -13,17 +13,17 @@ UCLASS()
 class TOONTANKS_API ATower : public ABasePawn
 {
 	GENERATED_BODY()
-	
-public:
-	ATower();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	// This will be called from the game mode
+	void HandleDestruction();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 private:
 	class ATank* Tank;
