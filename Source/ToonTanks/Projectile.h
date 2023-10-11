@@ -29,6 +29,9 @@ private:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpule, const FHitResult& Hit);
 
+	UPROPERTY(EditAnywhere)
+	float Damage = 10;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
