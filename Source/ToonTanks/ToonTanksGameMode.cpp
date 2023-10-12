@@ -26,6 +26,7 @@ void AToonTanksGameMode::ActorDied(AActor* DeadActor)
         DetroyedTower->HandleDestruction();
         if (GetTargetTowerCount() == 0)
         {
+            ToonTanksPlayerController->SetPlayerEnabledState(false);
             GameOver(true);
         }
     }
