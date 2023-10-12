@@ -17,14 +17,17 @@ void AToonTanksGameMode::ActorDied(AActor* DeadActor)
         if (ToonTanksPlayerController)
         {
             ToonTanksPlayerController->SetPlayerEnabledState(false);
-            UE_LOG(LogTemp, Warning, TEXT("You are dead."));
+            GameOver(false);
         }
     }
     // check if the destroyed actor was a tower
     else if (ATower* DetroyedTower = Cast<ATower>(DeadActor))
     {
         DetroyedTower->HandleDestruction();
-        UE_LOG(LogTemp, Warning, TEXT("You destroyed a tower!"));
+        if (GetTargetTowerCount() == 0)
+        {
+            GameOver(true);
+        }
     }
 }
 
@@ -66,4 +69,11 @@ void AToonTanksGameMode::HandleGameStart()
             );
         }
     }
+}
+
+int32 AToonTanksGameMode::GetTargetTowerCount() const
+{
+    TArray<AActor*> OutActors;
+    UGameplayStatics::GetAllActorsOfClass(this, ATower::StaticClass(), OutActors);
+    return OutActors.Num();
 }

@@ -21,6 +21,8 @@ void ATower::BeginPlay()
         FireRate, 
         true
     );
+
+    
 }
 
 void ATower::Tick(float DeltaTime)
