@@ -18,7 +18,7 @@ ATank::ATank()
     Camera->SetupAttachment(SpringArm);
 }
 
-APlayerController* ATank::GetTankPlayerController() const
+AToonTanksPlayerController* ATank::GetTankPlayerController() const
 {
     return TankPlayerController;
 }
@@ -36,7 +36,7 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
-    TankPlayerController = Cast<APlayerController>(GetController());
+    TankPlayerController = Cast<AToonTanksPlayerController>(GetController());
 
     if (TankPlayerController)
     {

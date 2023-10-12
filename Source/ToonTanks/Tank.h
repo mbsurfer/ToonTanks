@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BasePawn.h"
 #include "InputActionValue.h"
+#include "ToonTanksPlayerController.h"
 #include "Tank.generated.h"
 
 /**
@@ -18,7 +19,7 @@ class TOONTANKS_API ATank : public ABasePawn
 public:
 	ATank();
 
-	APlayerController* GetTankPlayerController() const;
+	AToonTanksPlayerController* GetTankPlayerController() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,7 +36,7 @@ private:
 	void Turn(const FInputActionValue& Value);
 	void Fire(const FInputActionValue& Value);
 
-	APlayerController* TankPlayerController;
+	AToonTanksPlayerController* TankPlayerController;
 
 public:
 
