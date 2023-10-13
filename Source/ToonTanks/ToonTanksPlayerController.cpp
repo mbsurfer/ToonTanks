@@ -8,7 +8,6 @@ void AToonTanksPlayerController::SetPlayerEnabledState(bool bPlayerEnabled)
     if (bPlayerEnabled)
     {
         GetPawn()->EnableInput(this);
-        UE_LOG(LogTemp, Warning, TEXT("Start!"));
     }
     else
     {

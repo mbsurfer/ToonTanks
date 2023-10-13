@@ -4,6 +4,7 @@
 #include "Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -13,6 +14,9 @@ AProjectile::AProjectile()
 
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh"));
 	RootComponent = ProjectileMesh;
+
+	TrailParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Smoke Trail"));
+	TrailParticles->SetupAttachment(ProjectileMesh);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
 	ProjectileMovement->InitialSpeed = 200;
@@ -39,7 +43,11 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	AActor* MyOwner = GetOwner();
 
 	// make sure the source of the hit is set
-	if (!MyOwner) return;
+	if (!MyOwner)
+	{
+		Destroy();
+		return;
+	}
 
 	if (OtherActor && OtherActor != this && OtherActor != MyOwner)
 	{
@@ -51,7 +59,14 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 			UDamageType::StaticClass()
 		);
 
-		Destroy();
+		// make sure HitParticles is set before using it
+		if (HitParticles)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticles, GetActorLocation(), GetActorRotation());
+		}
+		
 	}
+
+	Destroy();
 }
 
