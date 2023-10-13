@@ -19,28 +19,6 @@ class TOONTANKS_API ATank : public ABasePawn
 public:
 	ATank();
 
-	AToonTanksPlayerController* GetTankPlayerController() const;
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-private:
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	class USpringArmComponent* SpringArm;
-
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	class UCameraComponent* Camera;
-
-	void Move(const FInputActionValue& Value);
-	void Turn(const FInputActionValue& Value);
-	void Fire(const FInputActionValue& Value);
-
-	AToonTanksPlayerController* TankPlayerController;
-
-public:
-
-	public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -48,6 +26,8 @@ public:
 	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	AToonTanksPlayerController* GetTankPlayerController() const;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enhanced Input");
 	class UInputMappingContext* MappingContext;
@@ -66,4 +46,23 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Movement", BlueprintReadWrite)
 	float TurnRate = 150;
+
+	bool bAlive = true;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+private:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UCameraComponent* Camera;
+
+	void Move(const FInputActionValue& Value);
+	void Turn(const FInputActionValue& Value);
+	void Fire(const FInputActionValue& Value);
+
+	AToonTanksPlayerController* TankPlayerController;
 };
